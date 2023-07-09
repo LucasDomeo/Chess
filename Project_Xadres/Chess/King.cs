@@ -1,12 +1,21 @@
-﻿using System;
+﻿using Board;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_Xadres.Chess
+namespace Chess
 {
-    internal class King
+    class King : Pieces
     {
+        public King(boardd bd, Color color) : base(bd, color)
+        {
+        }
+
+        public override string ToString()
+        {
+            return "K";
+        }
     }
 }

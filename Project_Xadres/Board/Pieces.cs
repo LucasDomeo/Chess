@@ -9,9 +9,9 @@ namespace Board
         public int NBMoviments { get; protected set; }
         public boardd bd { get; protected set; }
 
-        public Pieces( Position position, Color color, boardd bd)
+        public Pieces(boardd bd , Color color)
         {
-            this.position = position;
+            this.position = null;
             this.color = color;
             this.bd = bd;
             NBMoviments = 0;

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess
+namespace Project_Xadres.Board
 {
-    internal class Queen
+    internal class BoardException
     {
     }
 }
