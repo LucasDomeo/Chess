@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_Xadres.Board
+namespace Board
 {
-    internal class BoardException
+    class BoardException : Exception
     {
+        public BoardException(string message) : base(message) { }
     }
 }

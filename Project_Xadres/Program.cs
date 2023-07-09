@@ -9,14 +9,22 @@ namespace ProjectXadres
     {
         static void Main(string[] args)
         {
-            boardd bd = new boardd(8, 8);
+            try
+            {
+                boardd bd = new boardd(8, 8);
 
-            bd.SetPiece(new Horse(bd, Color.Black), new Position(0, 0));
+                bd.SetPiece(new Horse(bd, Color.Black), new Position(0, 0));
+                bd.SetPiece(new King(bd, Color.White), new Position(5, 1));
 
-            Screen.PrintBoard(bd); 
+                Screen.PrintBoard(bd);
+
+            }
+            catch (BoardException e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             Console.ReadLine();
-
         }
     }
 }
