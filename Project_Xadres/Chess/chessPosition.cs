@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_Xadres.Chess
+namespace Chess
 {
     class chessPosition
     {

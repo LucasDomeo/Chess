@@ -11,13 +11,21 @@ namespace ProjectXadres
         {
             try
             {
-                boardd bd = new boardd(8, 8);
+                ChessMatch match = new ChessMatch();
 
-                bd.SetPiece(new Horse(bd, Color.Black), new Position(0, 0));
-                bd.SetPiece(new King(bd, Color.White), new Position(5, 1));
+                while (!match.Finished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.boardd);
 
-                Screen.PrintBoard(bd);
 
+                    Console.WriteLine();
+                    Console.WriteLine("Origin: ");
+                    Position origin = Screen.ReadChessPosition().toPosition();
+
+                    Console.WriteLine("Destiny: ");
+                    Position destiny = Screen.ReadChessPosition().toPosition();
+                }
             }
             catch (BoardException e)
             {

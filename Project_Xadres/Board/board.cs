@@ -2,13 +2,13 @@
 
 namespace Board
 {
-    class boardd
+    class board
     {
         public int line { get; set; }
         public int column { get; set; }
         private Pieces[,] pieces;
 
-        public boardd(int line, int column)
+        public board(int line, int column)
         {
             this.line = line;
             this.column = column;
@@ -25,7 +25,7 @@ namespace Board
             return pieces[pos.Line, pos.Column];
         }
 
-        public void SetPiece(Pieces p, Position pos)
+        public void AddPiece(Pieces p, Position pos)
         {
             if (HasPiece(pos))
             {
@@ -33,6 +33,18 @@ namespace Board
             }
             pieces[pos.Line, pos.Column] = p;
             p.position = pos;
+        }
+
+        public Pieces RemovePiece(Position pos)
+        {
+            if(piece(pos) == null)
+            {
+                return null;
+            }
+            Pieces aux = piece(pos);
+            aux.position = null;
+            pieces[pos.Line, pos.Column] = null;
+            return aux;
         }
 
         public bool HasPiece(Position pos) 

@@ -9,7 +9,7 @@ namespace Chess
 {
     class King : Pieces
     {
-        public King(boardd bd, Color color) : base(bd, color)
+        public King(board bd, Color color) : base(bd, color)
         {
         }
 
