@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Board;
 using Chess;
 
@@ -6,6 +7,36 @@ namespace Project_Xadres
 {
     class Screen
     {
+        public static void PrintMatch(ChessMatch match)
+        {
+            PrintBoard(match.boardd);
+            Console.WriteLine();
+            PrintCapPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + match.turn);
+            Console.WriteLine("Waiting play: " + match.CurrentPlayer);
+        }
+
+        public static void PrintCapPieces(ChessMatch match)
+        {
+            Console.WriteLine("  Captured Pieces");
+            Console.Write("White: ");
+            PrintConj(match.capturedpieces(Color.White));
+            Console.Write("Black: ");
+            PrintConj(match.capturedpieces(Color.Black));
+            Console.WriteLine();
+        }
+
+        public static void PrintConj(HashSet<Pieces> conj)
+        {
+            Console.Write("[");
+            foreach(Pieces x in conj)
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]  ");
+        }
+
         public static void PrintBoard(board b)
         {
             for (int i = 0; i < b.line; i++)
