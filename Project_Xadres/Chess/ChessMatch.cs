@@ -11,8 +11,8 @@ namespace Chess
     class ChessMatch
     {
         public board boardd { get; private set; }
-        private int turn;
-        private Color CurrentPlayer;
+        public int turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
 
         public ChessMatch()
@@ -22,6 +22,49 @@ namespace Chess
             CurrentPlayer = Color.White;
             Finished = false;
             PutPieces();
+        }
+
+        public void PerformMove(Position origin,  Position destination)
+        {
+            ExecuteMov(origin, destination);
+            turn++;
+            ChangePlayer();
+        }
+
+        public void ValidatingOriginPosition(Position pos)
+        {
+            if (boardd.piece(pos) == null)
+            {
+                throw new BoardException("There is no piece for the chosen position!");
+            }
+            if(CurrentPlayer != boardd.piece(pos).color)
+            {
+                throw new BoardException("The chosen piece is not yours!");
+            }
+            if (!boardd.piece(pos).ThereArePosibleMoves())
+            {
+                throw new BoardException("There are not possible moves for the chosen origin piece!");
+            }
+        }
+
+        public void ValidatingDestinyPosition(Position origin, Position destiny)
+        {
+            if (!boardd.piece(origin).CanMoveTo(destiny))
+            {
+                throw new BoardException("Invalid destination position!");
+            }
+        }
+
+        public void ChangePlayer() 
+        {
+            if(CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
         }
 
         public void ExecuteMov(Position origin,  Position destination) 

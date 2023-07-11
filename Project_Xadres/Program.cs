@@ -13,25 +13,42 @@ namespace ProjectXadres
             {
                 ChessMatch match = new ChessMatch();
 
-                while (!match.Finished)
-                {
-                    Console.Clear();
-                    Screen.PrintBoard(match.boardd);
+                    while (!match.Finished)
+                    {
+                        try
+                        {
+                            Console.Clear();
+                            Screen.PrintBoard(match.boardd);
+                            Console.WriteLine();
+                            Console.WriteLine("Turn: " + match.turn);
+                            Console.WriteLine("Waiting play: " + match.CurrentPlayer);
 
 
-                    Console.WriteLine();
-                    Console.Write("Origin: ");
-                    Position origin = Screen.ReadChessPosition().toPosition();
+                            Console.WriteLine();
+                            Console.Write("Origin: ");
+                            Position origin = Screen.ReadChessPosition().toPosition();
+                            match.ValidatingOriginPosition(origin);
 
-                    bool[,] posiblepositions = match.boardd.piece(origin).PosibleMoviments();
+                            bool[,] posiblepositions = match.boardd.piece(origin).PosibleMoviments();
 
-                    Console.Clear();
-                    Screen.PrintBoard(match.boardd, posiblepositions);
+                            Console.Clear();
+                            Screen.PrintBoard(match.boardd, posiblepositions);
 
-                    Console.Write("Destiny: ");
-                    Position destiny = Screen.ReadChessPosition().toPosition();
 
-                    match.ExecuteMov(origin, destiny);
+                            Console.WriteLine();
+                            Console.Write("Destination: ");
+                            Position destiny = Screen.ReadChessPosition().toPosition();
+                            match.ValidatingDestinyPosition(origin, destiny);
+
+                            match.PerformMove(origin, destiny);
+                        }
+                        catch (BoardException e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.ReadLine();
+                        }
+                
+                
                 }
             }
             catch (BoardException e)

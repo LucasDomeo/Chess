@@ -1,4 +1,6 @@
 ﻿using Board;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters;
 
 namespace Board
 {
@@ -20,6 +22,27 @@ namespace Board
         public void NBMovimentsMethod()
         {
             NBMoviments++;
+        }
+
+        public bool ThereArePosibleMoves()
+        {
+            bool[,] mat = PosibleMoviments();
+            for(int i = 0; i < bd.line; i++)
+            {
+                for(int j = 0; j < bd.column; j++)
+                {
+                    if (mat[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool CanMoveTo(Position pos) 
+        {
+            return PosibleMoviments()[pos.Line, pos.Column];
         }
 
         public abstract bool[,] PosibleMoviments();
