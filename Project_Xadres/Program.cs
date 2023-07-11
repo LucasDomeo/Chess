@@ -20,11 +20,18 @@ namespace ProjectXadres
 
 
                     Console.WriteLine();
-                    Console.WriteLine("Origin: ");
+                    Console.Write("Origin: ");
                     Position origin = Screen.ReadChessPosition().toPosition();
 
-                    Console.WriteLine("Destiny: ");
+                    bool[,] posiblepositions = match.boardd.piece(origin).PosibleMoviments();
+
+                    Console.Clear();
+                    Screen.PrintBoard(match.boardd, posiblepositions);
+
+                    Console.Write("Destiny: ");
                     Position destiny = Screen.ReadChessPosition().toPosition();
+
+                    match.ExecuteMov(origin, destiny);
                 }
             }
             catch (BoardException e)

@@ -2,7 +2,7 @@
 
 namespace Board
 {
-    class Pieces
+    abstract class Pieces
     {
         public Position position { get; set; }
         public Color color { get; protected set; }
@@ -21,5 +21,8 @@ namespace Board
         {
             NBMoviments++;
         }
+
+        public abstract bool[,] PosibleMoviments();
+
     }
 }

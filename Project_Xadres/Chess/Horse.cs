@@ -7,15 +7,5 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
-    class Horse : Pieces
-    {
-        public Horse(board bd, Color color) : base(bd, color) 
-        { 
-        }
-
-        public override string ToString()
-        {
-            return "H";
-        }
-    }
+    class Horse { }
 }

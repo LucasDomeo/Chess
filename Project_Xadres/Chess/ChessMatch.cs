@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Board;
+using Project_Xadres.Chess;
 
 namespace Chess
 {
@@ -33,19 +34,19 @@ namespace Chess
 
         private void PutPieces()
         {
-            boardd.AddPiece(new Horse(boardd, Color.Black), new chessPosition('c', 1).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.Black), new chessPosition('c', 2).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.Black), new chessPosition('d', 2).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.Black), new chessPosition('e', 2).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.Black), new chessPosition('e', 1).toPosition());
-            boardd.AddPiece(new King(boardd, Color.Black), new chessPosition('d', 1).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.White), new chessPosition('c', 1).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.White), new chessPosition('c', 2).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.White), new chessPosition('d', 2).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.White), new chessPosition('e', 2).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.White), new chessPosition('e', 1).toPosition());
+            boardd.AddPiece(new King(boardd, Color.White), new chessPosition('d', 1).toPosition());
 
-            boardd.AddPiece(new Horse(boardd, Color.White), new chessPosition('c', 7).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.White), new chessPosition('c', 8).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.White), new chessPosition('d', 7).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.White), new chessPosition('e', 7).toPosition());
-            boardd.AddPiece(new Horse(boardd, Color.White), new chessPosition('e', 8).toPosition());
-            boardd.AddPiece(new King(boardd, Color.White), new chessPosition('d', 8).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.Black), new chessPosition('c', 7).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.Black), new chessPosition('c', 8).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.Black), new chessPosition('d', 7).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.Black), new chessPosition('e', 7).toPosition());
+            boardd.AddPiece(new Tower(boardd, Color.Black), new chessPosition('e', 8).toPosition());
+            boardd.AddPiece(new King(boardd, Color.Black), new chessPosition('d', 8).toPosition());
         }
     }
 }
