@@ -14,7 +14,19 @@ namespace Project_Xadres
             PrintCapPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.turn);
-            Console.WriteLine("Waiting play: " + match.CurrentPlayer);
+            if (!match.Finished)
+            {
+                Console.WriteLine("Waiting play: " + match.CurrentPlayer);
+                if (match.check)
+                {
+                    Console.WriteLine("CHECK!!!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("CHECKMATE!!!");
+                Console.WriteLine("WINNER: " + match.CurrentPlayer);
+            }
         }
 
         public static void PrintCapPieces(ChessMatch match)
@@ -23,7 +35,10 @@ namespace Project_Xadres
             Console.Write("White: ");
             PrintConj(match.capturedpieces(Color.White));
             Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
             PrintConj(match.capturedpieces(Color.Black));
+            Console.ForegroundColor = aux;
             Console.WriteLine();
         }
 
@@ -81,6 +96,7 @@ namespace Project_Xadres
         public static chessPosition ReadChessPosition()
         {
             string s = Console.ReadLine();
+            
             char column = s[0];
             int line = int.Parse(s[1] + "");
             return new chessPosition(column, line);

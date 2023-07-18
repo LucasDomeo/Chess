@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Board;
 using Project_Xadres.Chess;
 
@@ -16,6 +13,7 @@ namespace Chess
         public bool Finished { get; private set; }
         public HashSet<Pieces> pieces;
         public HashSet<Pieces> CapPieces;
+        public bool check { get; private set; }
 
         public ChessMatch()
         {
@@ -23,16 +21,10 @@ namespace Chess
             turn = 1;
             CurrentPlayer = Color.White;
             Finished = false;
+            check = false;
             pieces = new HashSet<Pieces>();
             CapPieces = new HashSet<Pieces>();
             PutPieces();
-        }
-
-        public void PerformMove(Position origin,  Position destination)
-        {
-            ExecuteMov(origin, destination);
-            turn++;
-            ChangePlayer();
         }
 
         public void ValidatingOriginPosition(Position pos)
@@ -41,7 +33,7 @@ namespace Chess
             {
                 throw new BoardException("There is no piece for the chosen position!");
             }
-            if(CurrentPlayer != boardd.piece(pos).color)
+            if (CurrentPlayer != boardd.piece(pos).color)
             {
                 throw new BoardException("The chosen piece is not yours!");
             }
@@ -59,9 +51,9 @@ namespace Chess
             }
         }
 
-        public void ChangePlayer() 
+        public void ChangePlayer()
         {
-            if(CurrentPlayer == Color.White)
+            if (CurrentPlayer == Color.White)
             {
                 CurrentPlayer = Color.Black;
             }
@@ -74,9 +66,9 @@ namespace Chess
         public HashSet<Pieces> capturedpieces(Color color)
         {
             HashSet<Pieces> aux = new HashSet<Pieces>();
-            foreach(Pieces x  in CapPieces)
+            foreach (Pieces x in CapPieces)
             {
-                if(x.color == color)
+                if (x.color == color)
                 {
                     aux.Add(x);
                 }
@@ -84,7 +76,7 @@ namespace Chess
             return aux;
         }
 
-        public HashSet<Pieces> piecesingame(Color color)
+        public HashSet<Pieces>piecesingame(Color color)
         {
             HashSet<Pieces> aux = new HashSet<Pieces>();
             foreach (Pieces x in CapPieces)
@@ -98,7 +90,31 @@ namespace Chess
             return aux;
         }
 
-        public void ExecuteMov(Position origin,  Position destination) 
+        private Color AdversaryPiece(Color color)
+        {
+            if (color == Color.White)
+            {
+                return Color.Black;
+            }
+            else
+            {
+                return Color.White;
+            }
+        }
+
+        private Pieces KING(Color color)
+        {
+            foreach (Pieces x in piecesingame(color))
+            {
+                if (x is King)
+                {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        public Pieces ExecuteMov(Position origin,  Position destination) 
         {
             Pieces p = boardd.RemovePiece(origin);
             p.NBMovimentsMethod();
@@ -108,6 +124,91 @@ namespace Chess
             {
                 CapPieces.Add(CAPPiece);
             }
+            return CAPPiece;
+        }
+
+        public void UndoMove(Position origin, Position destination, Pieces CAPPieces)
+        {
+            Pieces p = boardd.RemovePiece(destination);
+            p.DNBMovimentsMethod();
+            if(CapPieces != null)
+            {
+                boardd.AddPiece(CAPPieces, destination);
+                CapPieces.Remove(CAPPieces);
+            }
+            boardd.AddPiece(p, origin);
+        }
+
+        public void PerformMove(Position origin, Position destination)
+        {
+            Pieces CAPPieces = ExecuteMov(origin, destination);
+            if (InCheck(CurrentPlayer))
+            {
+                UndoMove(origin, destination, CAPPieces);
+                throw new BoardException("You can't put yourself in check");
+            }
+            if (InCheck(AdversaryPiece(CurrentPlayer)))
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+            }
+
+            if (testcheckmat(AdversaryPiece(CurrentPlayer)))
+            {
+                Finished = true;
+            }
+            else
+            {
+                turn++;
+                ChangePlayer();
+            }
+        }
+
+        public bool InCheck(Color color)
+        {
+            Pieces K = KING(color);
+            foreach(Pieces x in piecesingame(AdversaryPiece(color)))
+            {
+                bool[,] mat = x.PosibleMoviments();
+                if (mat[K.position.Line, K.position.Column])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool testcheckmat(Color color)
+        {
+            if (!InCheck(color))
+            {
+                return false;
+            }
+            foreach(Pieces x in piecesingame(color))
+            {
+                bool[,] mat = x.PosibleMoviments();
+                for(int i = 0; i<boardd.line; i++)
+                {
+                    for(int j = 0; i<boardd.column; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position destination = new Position(i, j);
+                            Pieces cp = ExecuteMov(x.position, destination);
+                            bool tc = InCheck(color);
+                            UndoMove(x.position, destination, cp);
+                            if (!tc)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public void PutNewPiece(char column, int line, Pieces piece)

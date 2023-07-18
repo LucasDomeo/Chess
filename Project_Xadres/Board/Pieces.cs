@@ -24,6 +24,11 @@ namespace Board
             NBMoviments++;
         }
 
+        public void DNBMovimentsMethod()
+        {
+            NBMoviments--;
+        }
+
         public bool ThereArePosibleMoves()
         {
             bool[,] mat = PosibleMoviments();
