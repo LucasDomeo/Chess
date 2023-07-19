@@ -113,7 +113,10 @@ namespace Project_Xadres
 
                 if (pieces.color == Color.White)
                 {
+                    ConsoleColor aux = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(pieces);
+                    Console.ForegroundColor = aux;
                 }
                 else
                 {
