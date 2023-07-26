@@ -1,4 +1,5 @@
 ﻿using Board;
+using Project_Xadres.Chess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,11 @@ namespace Chess
 {
     class King : Pieces
     {
-        public King(board bd, Color color) : base(bd, color)
+        private ChessMatch mt;
+
+        public King(board bd, Color color, ChessMatch mt) : base(bd, color)
         {
+            this.mt = mt;
         }
 
         public override string ToString()
@@ -23,6 +27,12 @@ namespace Chess
         {
             Pieces p = bd.piece(pos);
             return p == null || p.color != color;
+        }
+
+        private bool rocktest(Position pos)
+        {
+            Pieces p = bd.piece(pos);
+            return p != null && p is Tower && p.color == color && p.NBMoviments == 0;
         }
 
         public override bool[,] PosibleMoviments()
@@ -86,6 +96,35 @@ namespace Chess
             {
                 mat[pos.Line, pos.Column] = true;
             }
+
+            //Rock
+            if (NBMoviments==0 && !mt.check)
+            {
+                //Little rock
+                Position post1 = new Position(position.Line, position.Column + 3);
+                if (rocktest(post1))
+                {
+                    Position p1 = new Position(position.Line, position.Column + 1);
+                    Position p2 = new Position(position.Line, position.Column + 2);
+                    if (bd.piece(p1)==null && bd.piece(p2) == null)
+                    {
+                        mat[position.Line, position.Column + 2] = true;
+                    }
+                }
+                //Big rock
+                Position post2 = new Position(position.Line, position.Column - 4);
+                if (rocktest(post2))
+                {
+                    Position p1 = new Position(position.Line, position.Column - 1);
+                    Position p2 = new Position(position.Line, position.Column - 2);
+                    Position p3 = new Position(position.Line, position.Column - 3);
+                    if (bd.piece(p1) == null && bd.piece(p2) == null && bd.piece(p3) == null)
+                    {
+                        mat[position.Line, position.Column - 2] = true;
+                    }
+                }
+            }
+
             return mat;
         }
     }

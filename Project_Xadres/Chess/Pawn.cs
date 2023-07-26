@@ -1,4 +1,5 @@
 ﻿using Board;
+using Chess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,10 @@ namespace Project_Xadres.Chess
 {
     class Pawn : Pieces
     {
-        public Pawn(board bd, Color color) : base(bd, color)
+        private ChessMatch mt;
+        public Pawn(board bd, Color color, ChessMatch mt) : base(bd, color)
         {
+            this.mt = mt;
         }
 
         public override string ToString()
@@ -35,11 +38,11 @@ namespace Project_Xadres.Chess
             bool[,] mat = new bool[bd.line, bd.column];
 
             Position pos = new Position(0, 0);
-            
-            if(color == Color.White)
+
+            if (color == Color.White)
             {
                 pos.SetVelues(position.Line - 1, position.Column);
-                if(bd.validposition(pos) && free(pos))
+                if (bd.validposition(pos) && free(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
@@ -57,6 +60,21 @@ namespace Project_Xadres.Chess
                 if (bd.validposition(pos) && ThereisEnemie(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
+                }
+
+                //enpassant
+                if (position.Line == 3)
+                {
+                    Position left = new Position(position.Line, position.Column - 1);
+                    if (bd.validposition(left) && ThereisEnemie(left) && bd.piece(left) == mt.vulnerableenpassant)
+                    {
+                        mat[left.Line - 1, left.Column] = true;
+                    }
+                    Position right = new Position(position.Line, position.Column + 1);
+                    if (bd.validposition(right) && ThereisEnemie(right) && bd.piece(right) == mt.vulnerableenpassant)
+                    {
+                        mat[right.Line - 1, right.Column] = true;
+                    }
                 }
             }
             else
@@ -81,8 +99,21 @@ namespace Project_Xadres.Chess
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+                //enpassant
+                if (position.Line == 4)
+                {
+                    Position left = new Position(position.Line, position.Column - 1);
+                    if (bd.validposition(left) && ThereisEnemie(left) && bd.piece(left) == mt.vulnerableenpassant)
+                    {
+                        mat[left.Line + 1, left.Column] = true;
+                    }
+                    Position right = new Position(position.Line, position.Column + 1);
+                    if (bd.validposition(right) && ThereisEnemie(right) && bd.piece(right) == mt.vulnerableenpassant)
+                    {
+                        mat[right.Line + 1, right.Column] = true;
+                    }
+                }
             }
-
             return mat;
         }
     }
